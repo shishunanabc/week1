@@ -26,7 +26,7 @@ public class GoodsController {
 	
 	@Autowired
 	private GoodsService service;
-	
+	//展示列表
 	@RequestMapping("list.do")
 	public String list(Model m,@RequestParam(defaultValue = "1")int pageNum,Condition con) {
 		PageHelper.startPage(pageNum, 3);
