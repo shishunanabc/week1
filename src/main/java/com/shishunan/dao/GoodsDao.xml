@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.shishunan.dao.GoodsDao">
+ 	<select id="list" resultMap="smap">
+ 		select * from goods
+ 		<where>
+ 			<if test="tname != null and tname != ''">
+ 				and id in(SELECT id FROM tb where tid in(SELECT tid from type where tname like concat('%',#{tname},'%')))
+ 			</if>
+ 			<if test="bname != null and bname != ''">
+ 				and id in(SELECT id FROM tb where bid in(SELECT bid from brand where bname like concat('%',#{bname},'%')))
+ 			</if>
+ 			<if test="p1 != null and p1 != '' and p2 != null and p2 != ''">
+ 				and price between #{p1} and #{p2}
+ 			</if>
+ 			<if test="name != null and name != ''">
+ 				and name like concat('%',#{name},'%')
+ 			</if>
+ 			<if test="ename != null and ename != ''">
+ 				and ename like concat('%',#{ename},'%')
+ 			</if>
+ 			<if test="biaoqian != null and biaoqian != ''">
+ 				and biaoqian like concat('%',#{biaoqian},'%')
+ 			</if>
+ 		</where>
+ 	</select>
+ 	<resultMap type="Goods" id="smap">
+ 		<id property="id" column="id"/>
+ 		<result property="name" column="name"/>
+ 		<result property="ename" column="ename"/>
+ 		<result property="size" column="size"/>
+ 		<result property="price" column="price"/>
+ 		<result property="num" column="num"/>
+ 		<result property="biaoqian" column="biaoqian"/>
+ 		<result property="pic" column="pic"/>
+ 		<collection property="types" ofType="Type" select="see" column="id"></collection>
+ 		<collection property="brands" ofType="Brand" select="sees" column="id"></collection>
+ 	</resultMap>
+ 	<select id="see" resultType="Type">
+ 		select * from tb t left join type y on(t.tid=y.tid) and t.id=#{id}
+ 	</select>
+ 	<select id="sees" resultType="Brand">
+ 		select * from tb d left join brand b on(d.bid=b.bid) and d.id=#{id}
+ 	</select>
+ 	
+ 	<insert id="addg">
+ 		insert into goods values(#{id},#{name},#{ename},#{size},#{price},#{num},#{biaoqian},#{pic})
+ 	</insert>
+ 	<insert id="addt">
+ 		insert into tb values(#{id},#{te},#{bd})
+ 	</insert>
+ </mapper>
