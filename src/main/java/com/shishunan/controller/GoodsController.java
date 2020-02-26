@@ -49,7 +49,7 @@ public class GoodsController {
 	public List<Brand> bd(){
 		return service.bd();
 	}
-	
+	//Ìí¼Ó
 	@RequestMapping("add.do")
 	public String add(Goods goods,@RequestParam("f")MultipartFile file,String bd,String te) throws IllegalStateException, IOException {
 		System.out.println(goods);
